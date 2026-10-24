@@ -45,6 +45,9 @@ namespace IdazkaritzaApp.Formularioak
 
             MessageBox.Show($"Bezeroa erregistratua: {bezeroa.Izena} (ID {bezeroa.Id})");
 
+            //Bezero leihoa erakutsi
+            new FrmBezeroLeihoa(bezeroa).Show();
+
             //Hurrengo bezerorako prestatu
             txtIzena.Clear();
             txtId.Text = Datuak.HurrengoId.ToString();

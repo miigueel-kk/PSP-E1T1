@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace IdazkaritzaApp.Formularioak
 {
-    public partial class FrmBezeroLehioa : Form
+    public partial class FrmBezeroLeihoa : Form
     {
 
         private readonly Bezeroa bezeroa;
@@ -20,7 +20,7 @@ namespace IdazkaritzaApp.Formularioak
         //Check-out egiten denean (lehioa itxi) jaurtitzen da
         public event Action<Bezeroa>? CheckOutEginda;
 
-        public FrmBezeroLehioa(Bezeroa bezeroa)
+        public FrmBezeroLeihoa(Bezeroa bezeroa)
         {
             InitializeComponent();
             this.bezeroa = bezeroa;

@@ -1,6 +1,6 @@
 ﻿namespace IdazkaritzaApp.Formularioak
 {
-    partial class FrmBezeroLehioa
+    partial class FrmBezeroLeihoa
     {
         /// <summary>
         /// Required designer variable.
@@ -44,102 +44,110 @@
             // lblIzena
             // 
             lblIzena.AutoSize = true;
-            lblIzena.Location = new Point(187, 94);
+            lblIzena.Location = new Point(214, 125);
             lblIzena.Name = "lblIzena";
-            lblIzena.Size = new Size(34, 15);
+            lblIzena.Size = new Size(44, 20);
             lblIzena.TabIndex = 2;
             lblIzena.Text = "Izena";
             // 
             // lblId
             // 
             lblId.AutoSize = true;
-            lblId.Location = new Point(187, 136);
+            lblId.Location = new Point(214, 181);
             lblId.Name = "lblId";
-            lblId.Size = new Size(18, 15);
+            lblId.Size = new Size(24, 20);
             lblId.TabIndex = 3;
             lblId.Text = "ID";
             // 
             // lblOstatua
             // 
             lblOstatua.AutoSize = true;
-            lblOstatua.Location = new Point(187, 178);
+            lblOstatua.Location = new Point(214, 237);
             lblOstatua.Name = "lblOstatua";
-            lblOstatua.Size = new Size(73, 15);
+            lblOstatua.Size = new Size(91, 20);
             lblOstatua.TabIndex = 4;
             lblOstatua.Text = "Ostatu Mota";
             // 
             // textIzena
             // 
-            textIzena.Location = new Point(318, 94);
+            textIzena.Location = new Point(363, 125);
+            textIzena.Margin = new Padding(3, 4, 3, 4);
             textIzena.Name = "textIzena";
-            textIzena.Size = new Size(100, 23);
+            textIzena.Size = new Size(114, 27);
             textIzena.TabIndex = 5;
             // 
             // textID
             // 
-            textID.Location = new Point(318, 137);
+            textID.Location = new Point(363, 183);
+            textID.Margin = new Padding(3, 4, 3, 4);
             textID.Name = "textID";
-            textID.Size = new Size(100, 23);
+            textID.Size = new Size(114, 27);
             textID.TabIndex = 6;
             // 
             // cmbOstatua
             // 
             cmbOstatua.FormattingEnabled = true;
-            cmbOstatua.Location = new Point(318, 175);
+            cmbOstatua.Location = new Point(363, 233);
+            cmbOstatua.Margin = new Padding(3, 4, 3, 4);
             cmbOstatua.Name = "cmbOstatua";
-            cmbOstatua.Size = new Size(121, 23);
+            cmbOstatua.Size = new Size(138, 28);
             cmbOstatua.TabIndex = 7;
             // 
             // btnEskuoihalak
             // 
-            btnEskuoihalak.Location = new Point(123, 264);
+            btnEskuoihalak.Location = new Point(141, 352);
+            btnEskuoihalak.Margin = new Padding(3, 4, 3, 4);
             btnEskuoihalak.Name = "btnEskuoihalak";
-            btnEskuoihalak.Size = new Size(90, 30);
+            btnEskuoihalak.Size = new Size(103, 40);
             btnEskuoihalak.TabIndex = 8;
             btnEskuoihalak.Text = "Eskuoihalak";
             btnEskuoihalak.UseVisualStyleBackColor = true;
             // 
             // btnIzarak
             // 
-            btnIzarak.Location = new Point(251, 264);
+            btnIzarak.Location = new Point(287, 352);
+            btnIzarak.Margin = new Padding(3, 4, 3, 4);
             btnIzarak.Name = "btnIzarak";
-            btnIzarak.Size = new Size(90, 30);
+            btnIzarak.Size = new Size(103, 40);
             btnIzarak.TabIndex = 9;
             btnIzarak.Text = "Izarak";
             btnIzarak.UseVisualStyleBackColor = true;
             // 
             // btnZaborra
             // 
-            btnZaborra.Location = new Point(397, 264);
+            btnZaborra.Location = new Point(454, 352);
+            btnZaborra.Margin = new Padding(3, 4, 3, 4);
             btnZaborra.Name = "btnZaborra";
-            btnZaborra.Size = new Size(90, 30);
+            btnZaborra.Size = new Size(103, 40);
             btnZaborra.TabIndex = 10;
             btnZaborra.Text = "Zaborra";
             btnZaborra.UseVisualStyleBackColor = true;
             // 
             // btnJatetxea
             // 
-            btnJatetxea.Location = new Point(538, 264);
+            btnJatetxea.Location = new Point(615, 352);
+            btnJatetxea.Margin = new Padding(3, 4, 3, 4);
             btnJatetxea.Name = "btnJatetxea";
-            btnJatetxea.Size = new Size(90, 30);
+            btnJatetxea.Size = new Size(103, 40);
             btnJatetxea.TabIndex = 11;
             btnJatetxea.Text = "Jatetxea";
             btnJatetxea.UseVisualStyleBackColor = true;
             // 
             // btnCheckOut
             // 
-            btnCheckOut.Location = new Point(202, 340);
+            btnCheckOut.Location = new Point(231, 453);
+            btnCheckOut.Margin = new Padding(3, 4, 3, 4);
             btnCheckOut.Name = "btnCheckOut";
-            btnCheckOut.Size = new Size(340, 40);
+            btnCheckOut.Size = new Size(389, 53);
             btnCheckOut.TabIndex = 12;
             btnCheckOut.Text = "Check-out";
             btnCheckOut.UseVisualStyleBackColor = true;
             // 
-            // FrmBezeroLehioa
+            // FrmBezeroLeihoa
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(914, 600);
             Controls.Add(btnCheckOut);
             Controls.Add(btnJatetxea);
             Controls.Add(btnZaborra);
@@ -151,8 +159,10 @@
             Controls.Add(lblOstatua);
             Controls.Add(lblId);
             Controls.Add(lblIzena);
-            Name = "FrmBezeroLehioa";
-            Text = "FrmBezeroLehioa";
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "FrmBezeroLeihoa";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "FrmBezeroLeihoa";
             ResumeLayout(false);
             PerformLayout();
         }
