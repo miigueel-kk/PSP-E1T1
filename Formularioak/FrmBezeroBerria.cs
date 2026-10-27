@@ -11,13 +11,16 @@ namespace IdazkaritzaApp.Formularioak
 {
     public partial class FrmBezeroBerria : Form
     {
-        public FrmBezeroBerria()
+        private readonly EskaeraZerrenda zerrenda;
+        public FrmBezeroBerria(EskaeraZerrenda zerrenda)
         {
             InitializeComponent();
             //ComboBox osatu
             cmbOstatua.DataSource = Enum.GetValues(typeof(OstatuMota));
             //Id osatu
             txtId.Text = Datuak.HurrengoId.ToString();
+
+            this.zerrenda = zerrenda;
         }
 
         private void btnSortu_Click(object sender, EventArgs e)
@@ -46,7 +49,7 @@ namespace IdazkaritzaApp.Formularioak
             MessageBox.Show($"Bezeroa erregistratua: {bezeroa.Izena} (ID {bezeroa.Id})");
 
             //Bezero leihoa erakutsi
-            new FrmBezeroLeihoa(bezeroa).Show();
+            new FrmBezeroLeihoa(bezeroa,zerrenda ).Show();
 
             //Hurrengo bezerorako prestatu
             txtIzena.Clear();

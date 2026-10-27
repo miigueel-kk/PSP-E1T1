@@ -75,6 +75,7 @@
             textIzena.Name = "textIzena";
             textIzena.Size = new Size(114, 27);
             textIzena.TabIndex = 5;
+            textIzena.TextChanged += textIzena_TextChanged;
             // 
             // textID
             // 
@@ -112,6 +113,7 @@
             btnIzarak.TabIndex = 9;
             btnIzarak.Text = "Izarak";
             btnIzarak.UseVisualStyleBackColor = true;
+           
             // 
             // btnZaborra
             // 
