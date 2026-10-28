@@ -1,4 +1,4 @@
-﻿namespace IdazkaritzaApp
+namespace IdazkaritzaApp
 {
     partial class FrmHasiera
     {
@@ -29,12 +29,13 @@
         private void InitializeComponent()
         {
             btnLangile = new Button();
+            btnBideojoko = new Button();
             btnBezero = new Button();
             SuspendLayout();
             // 
             // btnLangile
             // 
-            btnLangile.Location = new Point(283, 64);
+            btnLangile.Location = new Point(283, 40);
             btnLangile.Name = "btnLangile";
             btnLangile.Size = new Size(235, 105);
             btnLangile.TabIndex = 0;
@@ -42,9 +43,19 @@
             btnLangile.UseVisualStyleBackColor = true;
             btnLangile.Click += btnLangile_Click;
             // 
+            // btnBideojoko
+            // 
+            btnBideojoko.Location = new Point(283, 305);
+            btnBideojoko.Name = "btnBideojoko";
+            btnBideojoko.Size = new Size(235, 105);
+            btnBideojoko.TabIndex = 2;
+            btnBideojoko.Text = "Bideojokoa";
+            btnBideojoko.UseVisualStyleBackColor = true;
+            btnBideojoko.Click += btnBideojoko_Click;
+            // 
             // btnBezero
             // 
-            btnBezero.Location = new Point(283, 277);
+            btnBezero.Location = new Point(283, 172);
             btnBezero.Name = "btnBezero";
             btnBezero.Size = new Size(235, 105);
             btnBezero.TabIndex = 1;
@@ -57,6 +68,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnBideojoko);
             Controls.Add(btnBezero);
             Controls.Add(btnLangile);
             Name = "FrmHasiera";
@@ -66,8 +78,8 @@
         }
 
         #endregion
-
         private Button btnLangile;
+        private Button btnBideojoko;
         private Button btnBezero;
     }
 }

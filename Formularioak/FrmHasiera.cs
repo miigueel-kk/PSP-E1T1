@@ -16,6 +16,12 @@ namespace IdazkaritzaApp
             new EskaeraLeihoa(zerrenda).Show();
         }
 
+        private void btnBideojoko_Click(object sender, EventArgs e)
+        {
+            new FrmBideojoko().Show();
+
+        }
+
         private void btnBezero_Click(object sender, EventArgs e)
         {
             //Bezero berria
