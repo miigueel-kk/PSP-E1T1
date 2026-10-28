@@ -34,7 +34,7 @@
             //FrmBideojoko lehioaren konfigurazioa
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(700, 338);
+            ClientSize = new Size(1280, 720);
             Controls.Add(btnHasiBideojokoa);
             Margin = new Padding(3, 2, 3, 2);
             Name = "FrmBideojoko";
