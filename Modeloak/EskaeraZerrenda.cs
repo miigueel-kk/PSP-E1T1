@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IdazkaritzaApp.Formularioak
+namespace IdazkaritzaApp.Modeloak
 {
     public class EskaeraZerrenda
     {

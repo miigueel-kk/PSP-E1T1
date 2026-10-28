@@ -1,4 +1,5 @@
 using IdazkaritzaApp.Formularioak;
+using IdazkaritzaApp.Modeloak;
 
 namespace IdazkaritzaApp
 {
@@ -12,7 +13,6 @@ namespace IdazkaritzaApp
 
         private void btnLangile_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Langile");
             new EskaeraLeihoa(zerrenda).Show();
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IdazkaritzaApp.Modeloak;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
