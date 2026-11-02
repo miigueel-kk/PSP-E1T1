@@ -28,63 +28,64 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            button2 = new Button();
-            dataGridView1 = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            lanaHasiBotoia = new Button();
+            LanaBukatuBotoia = new Button();
+            eskaeraTaula = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)eskaeraTaula).BeginInit();
             SuspendLayout();
             // 
-            // button1
+            // lanaHasiBotoia
             // 
-            button1.Location = new Point(243, 57);
-            button1.Margin = new Padding(3, 4, 3, 4);
-            button1.Name = "button1";
-            button1.Size = new Size(137, 53);
-            button1.TabIndex = 0;
-            button1.Text = "Lanaldia Hasi";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            lanaHasiBotoia.Location = new Point(243, 57);
+            lanaHasiBotoia.Margin = new Padding(3, 4, 3, 4);
+            lanaHasiBotoia.Name = "lanaHasiBotoia";
+            lanaHasiBotoia.Size = new Size(137, 53);
+            lanaHasiBotoia.TabIndex = 0;
+            lanaHasiBotoia.Text = "Lanaldia Hasi";
+            lanaHasiBotoia.UseVisualStyleBackColor = true;
+            lanaHasiBotoia.Click += button1_Click;
             // 
-            // button2
+            // LanaBukatuBotoia
             // 
-            button2.Location = new Point(511, 57);
-            button2.Margin = new Padding(3, 4, 3, 4);
-            button2.Name = "button2";
-            button2.Size = new Size(137, 53);
-            button2.TabIndex = 1;
-            button2.Text = "Lanaldia Bukatu";
-            button2.UseVisualStyleBackColor = true;
+            LanaBukatuBotoia.Location = new Point(511, 57);
+            LanaBukatuBotoia.Margin = new Padding(3, 4, 3, 4);
+            LanaBukatuBotoia.Name = "LanaBukatuBotoia";
+            LanaBukatuBotoia.Size = new Size(137, 53);
+            LanaBukatuBotoia.TabIndex = 1;
+            LanaBukatuBotoia.Text = "Lanaldia Bukatu";
+            LanaBukatuBotoia.UseVisualStyleBackColor = true;
+            LanaBukatuBotoia.Click += LanaBukatuBotoia_Click;
             // 
-            // dataGridView1
+            // eskaeraTaula
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(125, 153);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(664, 266);
-            dataGridView1.TabIndex = 2;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            eskaeraTaula.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            eskaeraTaula.Location = new Point(125, 153);
+            eskaeraTaula.Name = "eskaeraTaula";
+            eskaeraTaula.RowHeadersWidth = 51;
+            eskaeraTaula.Size = new Size(664, 266);
+            eskaeraTaula.TabIndex = 2;
+            eskaeraTaula.CellContentClick += dataGridView1_CellContentClick;
             // 
             // EskaeraLeihoa
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(914, 600);
-            Controls.Add(dataGridView1);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(eskaeraTaula);
+            Controls.Add(LanaBukatuBotoia);
+            Controls.Add(lanaHasiBotoia);
             Margin = new Padding(3, 4, 3, 4);
             Name = "EskaeraLeihoa";
             Text = "EskaeraLeihoa";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)eskaeraTaula).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Button button1;
-        private Button button2;
-        private DataGridView dataGridView1;
+        private Button lanaHasiBotoia;
+        private Button LanaBukatuBotoia;
+        private DataGridView eskaeraTaula;
 
 
 

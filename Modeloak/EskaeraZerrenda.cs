@@ -4,6 +4,7 @@ using System.Text;
 
 namespace IdazkaritzaApp.Modeloak
 {
+    // Eskaerak kudeatzeko List-a
     public class EskaeraZerrenda
     {
         public List<Eskaera> eskaerak { get; set; }

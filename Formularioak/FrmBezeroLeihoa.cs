@@ -16,9 +16,8 @@ namespace IdazkaritzaApp.Formularioak
     {
         //Lehio honen bezeroa gordetzen du
         private readonly Bezeroa bezeroa;
-
+        // Eskaera zerrenda abiarazten dugu
         private readonly EskaeraZerrenda zerrenda;
-
 
         //Bezeroak eskaera bat egiten duenenan jaurtitzen da, bezeroa eta eskaera mota bidaltzen
         public event Action<Bezeroa, EskaeraMota>? EskaeraEginda;
@@ -63,6 +62,7 @@ namespace IdazkaritzaApp.Formularioak
         {
             //EskaeraEginda ekitaldia jaurtitzen du, bezeroa eta eskaera mota bidaliz
             EskaeraEginda?.Invoke(bezeroa, EskaeraMota.Eskuoihalak);
+            // Eskaera sortzen du, eskuoihala motakoa dela adieraziz
             await SortuEskaeraAsync(EskaeraMota.Eskuoihalak.ToString());
             //Mezua erakusten du
             MessageBox.Show("Zure eskuoihalen eskaera bidali da.");
@@ -73,6 +73,7 @@ namespace IdazkaritzaApp.Formularioak
         {
             //EskaeraEginda ekitaldia jaurtitzen du, bezeroa eta eskaera mota bidaliz
             EskaeraEginda?.Invoke(bezeroa, EskaeraMota.Izarak);
+            // Eskaera sortzen du, izara mota dela adieraziz
             await SortuEskaeraAsync(EskaeraMota.Izarak.ToString());
             //Eskaera bidali dela jakinarazten dio bezeroari
             MessageBox.Show("Zure izarak aldatzeko eskaera bidali da.");
@@ -82,6 +83,7 @@ namespace IdazkaritzaApp.Formularioak
         {
             //EskaeraEginda ekitaldia jaurtitzen du, bezeroa eskaera mota bidaliz
             EskaeraEginda?.Invoke(bezeroa, EskaeraMota.Zaborra);
+            // Eskaera sortzen du, zaborra motakoa dela adieraziz
             await SortuEskaeraAsync(EskaeraMota.Zaborra.ToString());
             //Eskaera bidali dela jakinarazten dio bezeroari
             MessageBox.Show("Zure zaborra jasotzeko eskaera bidali da.");
@@ -91,8 +93,8 @@ namespace IdazkaritzaApp.Formularioak
         {
             //EskaeraEginda ekitaldia jaurtitzen du, bezeroa eta eskaera mota bidaliz
             EskaeraEginda?.Invoke(bezeroa, EskaeraMota.Jatetxea);
+            // Eskaera sortzen du, jatetxe erreserba dela adieraziz
             await SortuEskaeraAsync(EskaeraMota.Jatetxea.ToString());
-
             //Eskaera bidali dela jakinarazten dio bezeroari
             MessageBox.Show("Zure jatetxe zerbitzuaren eskaera bidali da.");
         }
@@ -123,9 +125,12 @@ namespace IdazkaritzaApp.Formularioak
         }
 
         private String sortuEskaeraID() { 
+            // Eskaera ID-a ausazkoa izatea aukeratu dugu, identifikatzeko hobeto eskaera bakoitza
+            // Random metodoa deitzen dugu
             Random random = new Random();
-
+            // Lehenengo zenbakia atera behar dugu, 1-tik 99-ra joango dela esaten diogu
             int zenbakia = random.Next(0,100);
+            // Gero letra, A-tik Z-ra arte, Z barne.
             char letra = (char)random.Next('A', 'Z' + 1);
 
             return $"{zenbakia:D2}{letra}";
@@ -134,8 +139,7 @@ namespace IdazkaritzaApp.Formularioak
 
         private async Task SortuEskaeraAsync(String mota)
         {
-
-
+            // Motaren arabera, eskaera sortzeko denbora bat egongo da.
             switch (mota)
             {
                 case "Eskuoihalak":
@@ -147,21 +151,22 @@ namespace IdazkaritzaApp.Formularioak
                 case "Zaborra":
                     await Task.Delay(1000);
                     break;
-                case "Jatetxe":
+                case "Jatetxea":
                     await Task.Delay(1000);
                     break;
             }
             String id_eskaera;
-
+            // Gure eskaera sortzeko metodo deitzen dugu, eta ez da geldituko eskaera id hori errepikatuta ez dagoen arte.
             do
             {
                 id_eskaera = sortuEskaeraID();
             } while (zerrenda.eskaerak.Any(e => e.eskaera_id == id_eskaera));
 
-
+            // Gure langileen artean ausazko bat aterako da
             Random random = new Random();
             LangileakKudeatzen langile = (LangileakKudeatzen)random.Next(0, 4);
 
+            // Azkenik, eskaeraren atributuak pasatzen dira, eta zerrerandara gehitzen da
             Eskaera e = new Eskaera(
                 id_eskaera,
                 int.Parse(bezeroa.Id.ToString()),
@@ -170,21 +175,6 @@ namespace IdazkaritzaApp.Formularioak
                 );
 
             zerrenda.eskaerak.Add(e);
-
-            // Erakutsi eskatutako eskaera
-            System.Diagnostics.Debug.WriteLine("=== ESKAERAK ===");
-
-            foreach (Eskaera eskaera in zerrenda.eskaerak)
-            {
-                MessageBox.Show(
-                    $"ID: {eskaera.eskaera_id} | " +
-                    $"Bezeroa: {eskaera.bezero_id} | " +
-                    $"Mota: {eskaera.mota} | " +
-                    $"Langilea: {eskaera.langilea} | " +
-                    $"Amaituta: {eskaera.amaituta}"
-                );
-
-            }
             
         }
     }
