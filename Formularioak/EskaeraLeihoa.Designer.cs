@@ -79,6 +79,20 @@
             Text = "EskaeraLeihoa";
             ((System.ComponentModel.ISupportInitialize)eskaeraTaula).EndInit();
             ResumeLayout(false);
+            // 
+            // btnInportatuEsportatu
+            // 
+            this.btnInportatuEsportatu = new System.Windows.Forms.Button();
+            this.btnInportatuEsportatu.Location = new System.Drawing.Point(300, 320); // Taularen azpian kokatuta
+            this.btnInportatuEsportatu.Name = "btnInportatuEsportatu";
+            this.btnInportatuEsportatu.Size = new System.Drawing.Size(200, 40);
+            this.btnInportatuEsportatu.TabIndex = 10;
+            this.btnInportatuEsportatu.Text = "Inportatu / Esportatu";
+            this.btnInportatuEsportatu.UseVisualStyleBackColor = true;
+            this.btnInportatuEsportatu.Click += new System.EventHandler(this.btnInportatuEsportatu_Click);
+
+            // Kontrola formularioaren elementuen zerrendara gehitzen dugu
+            this.Controls.Add(this.btnInportatuEsportatu);
         }
 
         #endregion
@@ -86,7 +100,7 @@
         private Button lanaHasiBotoia;
         private Button LanaBukatuBotoia;
         private DataGridView eskaeraTaula;
-
+        private System.Windows.Forms.Button btnInportatuEsportatu;
 
 
     }

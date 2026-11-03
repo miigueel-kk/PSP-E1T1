@@ -16,6 +16,7 @@ namespace IdazkaritzaApp.Formularioak
         public EskaeraLeihoa(EskaeraZerrenda zerrenda)
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             // Zerrenda kargatu haren atributuak sartzeko taulan
             this.zerrenda = zerrenda;
             // Taularen konfigurazioa eta baimenak ezarri
@@ -116,6 +117,18 @@ namespace IdazkaritzaApp.Formularioak
             // Errenkada guztiak kentzen dira, lanaldia hasterakoan agertuko dira faltatzen diren eskaerak kudeatzeko
             eskaeraTaula.Rows.Clear();
 
+        }
+
+        private void btnInportatuEsportatu_Click(object sender, EventArgs e)
+        {
+            // CLEAN CODE: 'using' erabiliz ziurtatzen dugu leihoa ixten denean 
+            // memoria RAM-etik askatasunez ezabatuko dela (Memory Leak ekiditeko).
+            using (FormEsportatu esportatuLeihoa = new FormEsportatu())
+            {
+                // ShowDialog() erabiliz, bezero/langile leihoa blokeatuta geratuko da 
+                // esportazio-leihoarekin lanean ari garen bitartean (Modal leihoa).
+                esportatuLeihoa.ShowDialog();
+            }
         }
     }
 }
