@@ -27,6 +27,5 @@ namespace IdazkaritzaApp
             //Bezero berria
             new FrmBezeroBerria(zerrenda).Show();
         }
-
     }
 }

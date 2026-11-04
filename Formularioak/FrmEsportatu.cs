@@ -36,7 +36,7 @@ namespace IdazkaritzaApp.Formularioak
 
             if (ondo)
             {
-                MessageBox.Show("Euskal Autonomi Erkidegoko kanpin eta bezeroen datuak ondo inportatu dira!",
+                MessageBox.Show("Bezeroen datuak ondo inportatu dira!",
                                 "Inportazioa burututa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 kargatuDesplegableak();
                 berrezarriAukerak(); // Hasierako egoerara bueltatu

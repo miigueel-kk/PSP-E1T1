@@ -6,8 +6,8 @@ namespace IdazkaritzaApp.Modeloak
 {
     public enum OstatuMota
     {
-        Denda, 
-        Autokarabana,
-        Bungalow
+        denda, 
+        autoka,
+        bungalow
     }
 }

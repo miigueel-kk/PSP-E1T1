@@ -48,7 +48,8 @@ namespace IdazkaritzaApp.Formularioak
             eskaeraTaula.Columns["eskaera_id"].Visible = false;
 
             // Beste zutabeak 
-            eskaeraTaula.Columns.Add("bezero_id", "Bezeroa");
+            eskaeraTaula.Columns.Add("bezero_id", "Bezero_ID");
+            eskaeraTaula.Columns.Add("izena", "Bezeroa");
             eskaeraTaula.Columns.Add("mota", "Mota");
             eskaeraTaula.Columns.Add("langilea", "Langilea");
             // Checkbox-a gehitu
@@ -74,6 +75,7 @@ namespace IdazkaritzaApp.Formularioak
             eskaeraTaula.Rows.Add(
                e.eskaera_id,
                e.bezero_id,
+               e.izena,
                e.mota,
                e.langilea,
                e.amaituta

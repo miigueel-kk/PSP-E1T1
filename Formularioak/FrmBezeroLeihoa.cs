@@ -1,4 +1,4 @@
-﻿using IdazkaritzaApp.Modeloak;
+using IdazkaritzaApp.Modeloak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,18 +36,26 @@ namespace IdazkaritzaApp.Formularioak
 
             this.zerrenda = zerrenda;
 
-            //Bezeroaren Izena, ID eta ostatu mota erakusten ditu
-            textIzena.Text = bezeroa.Izena;
+            //Bezeroaren datu guztiak erakusten ditu
             textID.Text = bezeroa.Id.ToString();
+            textIzena.Text = bezeroa.Izena;
+            textAbizena.Text = bezeroa.Abizena;
+            textEmaila.Text = bezeroa.Emaila;
+            textTelefonoa.Text = bezeroa.Telefonoa;
             cmbOstatua.DataSource = Enum.GetValues(typeof(OstatuMota));
             cmbOstatua.SelectedItem = bezeroa.Ostatua;
+            textSortzeEguna.Text = bezeroa.SortzeEguna;
 
             //Ostatu mota ezin da aldatu
             cmbOstatua.Enabled = false;
 
-            //Izena eta id ezin dira aldatu
-            textIzena.ReadOnly = true;
+            //Datuak ezin dira aldatu
             textID.ReadOnly = true;
+            textIzena.ReadOnly = true;
+            textAbizena.ReadOnly = true;
+            textEmaila.ReadOnly = true;
+            textTelefonoa.ReadOnly = true;
+            textSortzeEguna.ReadOnly = true;
 
             //Botoiak bakoitza klikatzean bere metodoa exekutatzen da
             btnEskuoihalak.Click += btnEskuoihalak_Click;
@@ -58,7 +66,7 @@ namespace IdazkaritzaApp.Formularioak
             FormClosed += FrmBezeroLehioa_FormClosed;
         }
 
-        private async void btnEskuoihalak_Click(object sender, EventArgs e)
+        private async void btnEskuoihalak_Click(object? sender, EventArgs e)
         {
             //EskaeraEginda ekitaldia jaurtitzen du, bezeroa eta eskaera mota bidaliz
             EskaeraEginda?.Invoke(bezeroa, EskaeraMota.Eskuoihalak);
@@ -69,7 +77,7 @@ namespace IdazkaritzaApp.Formularioak
 
         }
 
-        private async void btnIzarak_Click(object sender, EventArgs e)
+        private async void btnIzarak_Click(object? sender, EventArgs e)
         {
             //EskaeraEginda ekitaldia jaurtitzen du, bezeroa eta eskaera mota bidaliz
             EskaeraEginda?.Invoke(bezeroa, EskaeraMota.Izarak);
@@ -79,7 +87,7 @@ namespace IdazkaritzaApp.Formularioak
             MessageBox.Show("Zure izarak aldatzeko eskaera bidali da.");
         }
 
-        private async void btnZaborra_Click(object sender, EventArgs e)
+        private async void btnZaborra_Click(object? sender, EventArgs e)
         {
             //EskaeraEginda ekitaldia jaurtitzen du, bezeroa eskaera mota bidaliz
             EskaeraEginda?.Invoke(bezeroa, EskaeraMota.Zaborra);
@@ -89,7 +97,7 @@ namespace IdazkaritzaApp.Formularioak
             MessageBox.Show("Zure zaborra jasotzeko eskaera bidali da.");
         }
 
-        private async void btnJatetxea_Click(object sender, EventArgs e)
+        private async void btnJatetxea_Click(object? sender, EventArgs e)
         {
             //EskaeraEginda ekitaldia jaurtitzen du, bezeroa eta eskaera mota bidaliz
             EskaeraEginda?.Invoke(bezeroa, EskaeraMota.Jatetxea);
@@ -99,13 +107,13 @@ namespace IdazkaritzaApp.Formularioak
             MessageBox.Show("Zure jatetxe zerbitzuaren eskaera bidali da.");
         }
 
-        private void btnCheckOut_Click(object sender, EventArgs e)
+        private void btnCheckOut_Click(object? sender, EventArgs e)
         {
             //Bezeroa joaten da, leihoa itxi egiten da
             Close();
         }
 
-        private void FrmBezeroLehioa_FormClosed(object sender, FormClosedEventArgs e)
+        private void FrmBezeroLehioa_FormClosed(object? sender, FormClosedEventArgs e)
         {
             //Lehioa ixtean bezeroa joan dela jakinarazten du
             CheckOutEginda?.Invoke(bezeroa);
@@ -117,19 +125,18 @@ namespace IdazkaritzaApp.Formularioak
             MessageBox.Show(this, testua, "Idazkaritzaren mezua");
         }
 
-   
-
-        private void textIzena_TextChanged(object sender, EventArgs e)
+        private void textIzena_TextChanged(object? sender, EventArgs e)
         {
 
         }
 
-        private String sortuEskaeraID() { 
+        private String sortuEskaeraID()
+        {
             // Eskaera ID-a ausazkoa izatea aukeratu dugu, identifikatzeko hobeto eskaera bakoitza
             // Random metodoa deitzen dugu
             Random random = new Random();
             // Lehenengo zenbakia atera behar dugu, 1-tik 99-ra joango dela esaten diogu
-            int zenbakia = random.Next(0,100);
+            int zenbakia = random.Next(0, 100);
             // Gero letra, A-tik Z-ra arte, Z barne.
             char letra = (char)random.Next('A', 'Z' + 1);
 
@@ -169,14 +176,14 @@ namespace IdazkaritzaApp.Formularioak
             // Azkenik, eskaeraren atributuak pasatzen dira, eta zerrerandara gehitzen da
             Eskaera e = new Eskaera(
                 id_eskaera,
-                int.Parse(bezeroa.Id.ToString()),
+                bezeroa.Id,
+                bezeroa.Izena,
                 mota,
                 langile.ToString()
                 );
 
             zerrenda.eskaerak.Add(e);
-            
+
         }
     }
 }
- 
