@@ -1,0 +1,7 @@
+db.url=jdbc:oracle:thin:@localhost:1521/xepdb1
+db.user=DBE1T1
+db.pass=DBE1T1
+xml.kanpinak=3PAG2_E1_kanpinak.xml
+xml.bezeroak=3PAG2_E1_bezeroak.xml
+export.csv=3PAG2_E1_export.csv
+export.xml=3PAG2_E1_export.xml
