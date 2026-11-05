@@ -1,4 +1,4 @@
-﻿namespace IdazkaritzaApp.Formularioak
+namespace IdazkaritzaApp.Formularioak
 {
     partial class FormEsportatu
     {
@@ -25,6 +25,8 @@
             this.cmbProbintzia = new System.Windows.Forms.ComboBox();
             this.cmbHerria = new System.Windows.Forms.ComboBox();
             this.btnEsportatu = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.lblProgresua = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnInportatu
@@ -106,11 +108,30 @@
             this.btnEsportatu.UseVisualStyleBackColor = true;
             this.btnEsportatu.Click += new System.EventHandler(this.btnEsportatu_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(65, 350);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(310, 28);
+            this.progressBar1.TabIndex = 8;
+            this.progressBar1.Visible = false;
+            // 
+            // lblProgresua
+            // 
+            this.lblProgresua.Location = new System.Drawing.Point(65, 383);
+            this.lblProgresua.Name = "lblProgresua";
+            this.lblProgresua.Size = new System.Drawing.Size(310, 20);
+            this.lblProgresua.TabIndex = 9;
+            this.lblProgresua.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblProgresua.Visible = false;
+            // 
             // FormEsportatu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(440, 380);
+            this.ClientSize = new System.Drawing.Size(440, 420);
+            this.Controls.Add(this.lblProgresua);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btnEsportatu);
             this.Controls.Add(this.cmbHerria);
             this.Controls.Add(this.lblHerria);
@@ -139,5 +160,7 @@
         private System.Windows.Forms.ComboBox cmbProbintzia;
         private System.Windows.Forms.ComboBox cmbHerria;
         private System.Windows.Forms.Button btnEsportatu;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label lblProgresua;
     }
 }
