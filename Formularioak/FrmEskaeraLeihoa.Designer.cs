@@ -1,6 +1,6 @@
 ﻿namespace IdazkaritzaApp.Formularioak
 {
-    partial class EskaeraLeihoa
+    partial class FrmEskaeraLeihoa
     {
         /// <summary>
         /// Required designer variable.

@@ -13,7 +13,7 @@ namespace IdazkaritzaApp
 
         private void btnLangile_Click(object sender, EventArgs e)
         {
-            new EskaeraLeihoa(zerrenda).Show();
+            new FrmEskaeraLeihoa(zerrenda).Show();
         }
 
         private void btnBideojoko_Click(object sender, EventArgs e)

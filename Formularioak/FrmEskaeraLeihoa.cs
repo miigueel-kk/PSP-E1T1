@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace IdazkaritzaApp.Formularioak
 {
-    public partial class EskaeraLeihoa : Form
+    public partial class FrmEskaeraLeihoa : Form
 
     {
         private readonly EskaeraZerrenda zerrenda;
-        public EskaeraLeihoa(EskaeraZerrenda zerrenda)
+        public FrmEskaeraLeihoa(EskaeraZerrenda zerrenda)
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
