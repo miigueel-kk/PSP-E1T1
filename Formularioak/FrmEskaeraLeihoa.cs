@@ -1,4 +1,4 @@
-﻿using IdazkaritzaApp.Modeloak;
+using IdazkaritzaApp.Modeloak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -99,6 +99,8 @@ namespace IdazkaritzaApp.Formularioak
 
         private void LanaBukatuBotoia_Click(object sender, EventArgs e)
         {
+            eskaeraTaula.EndEdit();
+
             // Errenkada bakoitza zeharkatuko du
             foreach (DataGridViewRow errenkada in eskaeraTaula.Rows)
             {

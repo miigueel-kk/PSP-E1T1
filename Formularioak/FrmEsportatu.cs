@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -36,11 +37,22 @@ namespace IdazkaritzaApp.Formularioak
         }
 
         // 2. BOTOIA: INPORTATU DATUAK
-        private void btnInportatu_Click(object sender, EventArgs e)
+        private async void btnInportatu_Click(object sender, EventArgs e)
         {
             aldatuEgoera(false); // Botoiak blokeatu prozesua amaitu arte
 
-            bool ondo = ExekutatuJava("inportatu", out string mezua);
+            Task<(bool ondo, string mezua)> javaTask = Task.Run(() =>
+            {
+                bool emaitza = ExekutatuJava("inportatu", out string irteeraMezua);
+                return (emaitza, irteeraMezua);
+            });
+
+            Task progresuTask = ErakutsiProgresuaAsync("Datuak inportatzen");
+
+            // Bi atazak (Java prozesua eta gutxienez 5 segundoko barra) amaitu arte itxaron
+            await Task.WhenAll(javaTask, progresuTask);
+
+            (bool ondo, string mezua) = await javaTask;
 
             aldatuEgoera(true);
 
@@ -59,7 +71,7 @@ namespace IdazkaritzaApp.Formularioak
         }
 
         // 3. BOTOIA: ESPORTATU DATUAK
-        private void btnEsportatu_Click(object sender, EventArgs e)
+        private async void btnEsportatu_Click(object sender, EventArgs e)
         {
             string formatua = rbCSV.Checked ? "CSV" : "XML";
             string probintzia = cmbProbintzia.SelectedItem != null ? cmbProbintzia.SelectedItem.ToString() : "Guztiak";
@@ -74,7 +86,18 @@ namespace IdazkaritzaApp.Formularioak
 
             aldatuEgoera(false);
 
-            bool ondo = ExekutatuJava(argumentuak, out string mezua);
+            Task<(bool ondo, string mezua)> javaTask = Task.Run(() =>
+            {
+                bool emaitza = ExekutatuJava(argumentuak, out string irteeraMezua);
+                return (emaitza, irteeraMezua);
+            });
+
+            Task progresuTask = ErakutsiProgresuaAsync("Datuak esportatzen");
+
+            // Bi atazak (Java prozesua eta gutxienez 5 segundoko barra) amaitu arte itxaron
+            await Task.WhenAll(javaTask, progresuTask);
+
+            (bool ondo, string mezua) = await javaTask;
 
             aldatuEgoera(true);
 
@@ -193,27 +216,64 @@ namespace IdazkaritzaApp.Formularioak
             }
         }
 
+        // Metodo laguntzailea: Gutxienez 5 segundoko (5000ms) karga-barra erakusten du UI-a izoztu gabe
+        private async Task ErakutsiProgresuaAsync(string ekintzaTestua)
+        {
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = 100;
+            progressBar1.Value = 0;
+            progressBar1.Visible = true;
+
+            lblProgresua.Text = $"{ekintzaTestua}... 0%";
+            lblProgresua.Visible = true;
+
+            // Ariketa 8-an bezala 200ms-ro eguneratu: 25 pauso * 200ms = 5000ms (5 segundo)
+            int pausoa = 4;
+            for (int portzentaia = pausoa; portzentaia <= 100; portzentaia += pausoa)
+            {
+                await Task.Delay(200);
+                progressBar1.Value = portzentaia;
+                lblProgresua.Text = $"{ekintzaTestua}... {portzentaia}%";
+            }
+
+            progressBar1.Value = 100;
+        }
+
         // Metodo laguntzailea: Interfazea blokeatu/desblokeatu prozesua exekutatzen den bitartean
         private void aldatuEgoera(bool aktibo)
         {
             btnInportatu.Enabled = aktibo;
             btnEsportatu.Enabled = aktibo;
+            rbCSV.Enabled = aktibo;
+            rbXML.Enabled = aktibo;
+            cmbProbintzia.Enabled = aktibo;
+            cmbHerria.Enabled = aktibo;
+
+            if (aktibo)
+            {
+                progressBar1.Visible = false;
+                lblProgresua.Visible = false;
+            }
+
             Cursor = aktibo ? Cursors.Default : Cursors.WaitCursor;
         }
 
-        // Funtzio honek DatuKudeaketa.jar exekutatzen du atzeko planoan zure Eclipse-ko URL-arekin
+        // Funtzio honek DatuKudeaketa.jar exekutatzen du atzeko planoan edozein gailutatik
         private bool ExekutatuJava(string argumentuak, out string mezua)
         {
             try
             {
+                string jarIbilbidea = Path.Combine(lanKarpeta, "DatuKudeaketa.jar");
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
-                    FileName = @"C:\Users\Ikasle\Downloads\eclipse-java-2026-09-R-win32-x86_64\eclipse\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_25.0.4.v20260826-0822\jre\bin\java.exe",
-                    Arguments = $"-jar \"DatuKudeaketa.jar\" {argumentuak}",
+                    FileName = LortuJavaBidea(),
+                    Arguments = $"-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -jar \"{jarIbilbidea}\" {argumentuak}",
                     WorkingDirectory = lanKarpeta,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
+                    StandardOutputEncoding = System.Text.Encoding.UTF8,
+                    StandardErrorEncoding = System.Text.Encoding.UTF8,
                     CreateNoWindow = true
                 };
 
@@ -222,6 +282,10 @@ namespace IdazkaritzaApp.Formularioak
                     string irteera = p.StandardOutput.ReadToEnd();
                     mezua = p.StandardError.ReadToEnd();
                     p.WaitForExit();
+                    if (p.ExitCode != 0 && string.IsNullOrWhiteSpace(mezua))
+                    {
+                        mezua = irteera;
+                    }
                     return p.ExitCode == 0;
                 }
             }
@@ -230,6 +294,67 @@ namespace IdazkaritzaApp.Formularioak
                 mezua = ex.Message;
                 return false;
             }
+        }
+
+        // Edozein ordenagailutan instalatutako java.exe automatikoki bilatzen du
+        private static string LortuJavaBidea()
+        {
+            // 1. JAVA_HOME ingurune-aldagaia egiaztatu
+            string? javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
+            if (!string.IsNullOrWhiteSpace(javaHome))
+            {
+                string javaExe = Path.Combine(javaHome, "bin", "java.exe");
+                if (File.Exists(javaExe)) return javaExe;
+            }
+
+            // 2. PATH ingurune-aldagaia aztertu (java.exe zuzenean edo Oracle XE-ren JDK barruan)
+            string? pathEnv = Environment.GetEnvironmentVariable("PATH");
+            if (!string.IsNullOrWhiteSpace(pathEnv))
+            {
+                foreach (string zatia in pathEnv.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    try
+                    {
+                        string karpeta = zatia.Trim('\"');
+                        string javaZuzena = Path.Combine(karpeta, "java.exe");
+                        if (File.Exists(javaZuzena)) return javaZuzena;
+
+                        // Oracle XE instalazioak PATH-ean ...\dbhomeXE\bin gehitzen du eta ondoan ..\jdk\bin\java.exe dauka
+                        string oracleJdkJava = Path.GetFullPath(Path.Combine(karpeta, @"..\jdk\bin\java.exe"));
+                        if (File.Exists(oracleJdkJava)) return oracleJdkJava;
+                    }
+                    catch { }
+                }
+            }
+
+            // 3. Ohiko instalazio karpetak (Program Files, Oracle C:\app, eta erabiltzailearen Eclipse)
+            string[] bilaketaErroak = new[]
+            {
+                @"C:\Program Files\Java",
+                @"C:\Program Files\Eclipse Adoptium",
+                @"C:\Program Files\Microsoft",
+                @"C:\Program Files (x86)\Java",
+                @"C:\app",
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "eclipse"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".p2", "pool", "plugins"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads")
+            };
+
+            foreach (string erroa in bilaketaErroak)
+            {
+                try
+                {
+                    if (!Directory.Exists(erroa)) continue;
+                    foreach (string fitx in Directory.EnumerateFiles(erroa, "java.exe", SearchOption.AllDirectories))
+                    {
+                        return fitx;
+                    }
+                }
+                catch { }
+            }
+
+            // 4. Erreserba gisa sistemako komando lehenetsia
+            return "java";
         }
     }
 }
