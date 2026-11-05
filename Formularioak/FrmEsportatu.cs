@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,7 +11,17 @@ namespace IdazkaritzaApp.Formularioak
     {
         // Probintzia bakoitzaren herriak gordetzeko hiztegia (Cache-a)
         private Dictionary<string, HashSet<string>> probintziaHerriak = new Dictionary<string, HashSet<string>>();
-        private string lanKarpeta = Application.StartupPath;
+        private string lanKarpeta = LortuBaliabideakKarpeta();
+
+        private static string LortuBaliabideakKarpeta()
+        {
+            string karpeta = Path.GetFullPath(Path.Combine(Application.StartupPath, @"..\..\..\Baliabideak"));
+            if (!Directory.Exists(karpeta))
+            {
+                karpeta = Path.Combine(Application.StartupPath, "Baliabideak");
+            }
+            return karpeta;
+        }
 
         public FormEsportatu()
         {

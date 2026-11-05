@@ -14,10 +14,15 @@ namespace IdazkaritzaApp.Modeloak
     {
         private const string BezeroakXmlIzena = "3PAG2_E1_bezeroak.xml";
 
-        // Fitxategiaren bide osoa lortzen du (bin\Debug\... karpetan)
+        // Fitxategiaren bide osoa lortzen du (Baliabideak karpetan)
         private static string LortuXmlIbilbidea()
         {
-            return Path.Combine(Application.StartupPath, BezeroakXmlIzena);
+            string baliabideakKarpeta = Path.GetFullPath(Path.Combine(Application.StartupPath, @"..\..\..\Baliabideak"));
+            if (!Directory.Exists(baliabideakKarpeta))
+            {
+                baliabideakKarpeta = Path.Combine(Application.StartupPath, "Baliabideak");
+            }
+            return Path.Combine(baliabideakKarpeta, BezeroakXmlIzena);
         }
 
         /// <summary>

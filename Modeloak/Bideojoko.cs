@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -18,7 +18,12 @@ namespace IdazkaritzaApp.Modeloak
         public Bideojoko()
         {
             //Bideojokoaren exekutagarriaren bidea ezartzen du
-            ExeRuta = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BideojokoaBuild", "E1T1.exe");
+            string baliabideakKarpeta = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Baliabideak"));
+            if (!Directory.Exists(baliabideakKarpeta))
+            {
+                baliabideakKarpeta = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Baliabideak");
+            }
+            ExeRuta = Path.Combine(baliabideakKarpeta, "BideojokoaBuild", "E1T1.exe");
         }
 
         //Bideojokoa hasteko metodoa
