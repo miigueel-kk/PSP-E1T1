@@ -201,15 +201,16 @@ namespace IdazkaritzaApp.Formularioak
             Cursor = aktibo ? Cursors.Default : Cursors.WaitCursor;
         }
 
-        // Funtzio honek DatuKudeaketa.jar exekutatzen du atzeko planoan zure Eclipse-ko URL-arekin
+        // Funtzio honek DatuKudeaketa.jar exekutatzen du atzeko planoan edozein gailutatik
         private bool ExekutatuJava(string argumentuak, out string mezua)
         {
             try
             {
+                string jarIbilbidea = Path.Combine(lanKarpeta, "DatuKudeaketa.jar");
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
-                    FileName = @"C:\Users\Ikasle\Downloads\eclipse-java-2026-09-R-win32-x86_64\eclipse\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_25.0.4.v20260826-0822\jre\bin\java.exe",
-                    Arguments = $"-jar \"DatuKudeaketa.jar\" {argumentuak}",
+                    FileName = LortuJavaBidea(),
+                    Arguments = $"-jar \"{jarIbilbidea}\" {argumentuak}",
                     WorkingDirectory = lanKarpeta,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -222,6 +223,10 @@ namespace IdazkaritzaApp.Formularioak
                     string irteera = p.StandardOutput.ReadToEnd();
                     mezua = p.StandardError.ReadToEnd();
                     p.WaitForExit();
+                    if (p.ExitCode != 0 && string.IsNullOrWhiteSpace(mezua))
+                    {
+                        mezua = irteera;
+                    }
                     return p.ExitCode == 0;
                 }
             }
@@ -230,6 +235,67 @@ namespace IdazkaritzaApp.Formularioak
                 mezua = ex.Message;
                 return false;
             }
+        }
+
+        // Edozein ordenagailutan instalatutako java.exe automatikoki bilatzen du
+        private static string LortuJavaBidea()
+        {
+            // 1. JAVA_HOME ingurune-aldagaia egiaztatu
+            string? javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
+            if (!string.IsNullOrWhiteSpace(javaHome))
+            {
+                string javaExe = Path.Combine(javaHome, "bin", "java.exe");
+                if (File.Exists(javaExe)) return javaExe;
+            }
+
+            // 2. PATH ingurune-aldagaia aztertu (java.exe zuzenean edo Oracle XE-ren JDK barruan)
+            string? pathEnv = Environment.GetEnvironmentVariable("PATH");
+            if (!string.IsNullOrWhiteSpace(pathEnv))
+            {
+                foreach (string zatia in pathEnv.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    try
+                    {
+                        string karpeta = zatia.Trim('\"');
+                        string javaZuzena = Path.Combine(karpeta, "java.exe");
+                        if (File.Exists(javaZuzena)) return javaZuzena;
+
+                        // Oracle XE instalazioak PATH-ean ...\dbhomeXE\bin gehitzen du eta ondoan ..\jdk\bin\java.exe dauka
+                        string oracleJdkJava = Path.GetFullPath(Path.Combine(karpeta, @"..\jdk\bin\java.exe"));
+                        if (File.Exists(oracleJdkJava)) return oracleJdkJava;
+                    }
+                    catch { }
+                }
+            }
+
+            // 3. Ohiko instalazio karpetak (Program Files, Oracle C:\app, eta erabiltzailearen Eclipse)
+            string[] bilaketaErroak = new[]
+            {
+                @"C:\Program Files\Java",
+                @"C:\Program Files\Eclipse Adoptium",
+                @"C:\Program Files\Microsoft",
+                @"C:\Program Files (x86)\Java",
+                @"C:\app",
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "eclipse"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".p2", "pool", "plugins"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads")
+            };
+
+            foreach (string erroa in bilaketaErroak)
+            {
+                try
+                {
+                    if (!Directory.Exists(erroa)) continue;
+                    foreach (string fitx in Directory.EnumerateFiles(erroa, "java.exe", SearchOption.AllDirectories))
+                    {
+                        return fitx;
+                    }
+                }
+                catch { }
+            }
+
+            // 4. Erreserba gisa sistemako komando lehenetsia
+            return "java";
         }
     }
 }
