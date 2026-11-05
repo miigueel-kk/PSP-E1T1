@@ -1,4 +1,4 @@
-﻿namespace IdazkaritzaApp.Formularioak
+namespace IdazkaritzaApp.Formularioak
 {
     partial class EskaeraLeihoa
     {
@@ -31,6 +31,7 @@
             lanaHasiBotoia = new Button();
             LanaBukatuBotoia = new Button();
             eskaeraTaula = new DataGridView();
+            btnInportatuEsportatu = new Button();
             ((System.ComponentModel.ISupportInitialize)eskaeraTaula).BeginInit();
             SuspendLayout();
             // 
@@ -66,11 +67,22 @@
             eskaeraTaula.TabIndex = 2;
             eskaeraTaula.CellContentClick += dataGridView1_CellContentClick;
             // 
+            // btnInportatuEsportatu
+            // 
+            btnInportatuEsportatu.Location = new Point(357, 460); // Taularen azpian kokatuta
+            btnInportatuEsportatu.Name = "btnInportatuEsportatu";
+            btnInportatuEsportatu.Size = new Size(200, 45);
+            btnInportatuEsportatu.TabIndex = 3;
+            btnInportatuEsportatu.Text = "Inportatu / Esportatu";
+            btnInportatuEsportatu.UseVisualStyleBackColor = true;
+            btnInportatuEsportatu.Click += btnInportatuEsportatu_Click;
+            // 
             // EskaeraLeihoa
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(914, 600);
+            Controls.Add(btnInportatuEsportatu);
             Controls.Add(eskaeraTaula);
             Controls.Add(LanaBukatuBotoia);
             Controls.Add(lanaHasiBotoia);
@@ -79,20 +91,6 @@
             Text = "EskaeraLeihoa";
             ((System.ComponentModel.ISupportInitialize)eskaeraTaula).EndInit();
             ResumeLayout(false);
-            // 
-            // btnInportatuEsportatu
-            // 
-            this.btnInportatuEsportatu = new System.Windows.Forms.Button();
-            this.btnInportatuEsportatu.Location = new System.Drawing.Point(300, 320); // Taularen azpian kokatuta
-            this.btnInportatuEsportatu.Name = "btnInportatuEsportatu";
-            this.btnInportatuEsportatu.Size = new System.Drawing.Size(200, 40);
-            this.btnInportatuEsportatu.TabIndex = 10;
-            this.btnInportatuEsportatu.Text = "Inportatu / Esportatu";
-            this.btnInportatuEsportatu.UseVisualStyleBackColor = true;
-            this.btnInportatuEsportatu.Click += new System.EventHandler(this.btnInportatuEsportatu_Click);
-
-            // Kontrola formularioaren elementuen zerrendara gehitzen dugu
-            this.Controls.Add(this.btnInportatuEsportatu);
         }
 
         #endregion
@@ -100,8 +98,6 @@
         private Button lanaHasiBotoia;
         private Button LanaBukatuBotoia;
         private DataGridView eskaeraTaula;
-        private System.Windows.Forms.Button btnInportatuEsportatu;
-
-
+        private Button btnInportatuEsportatu;
     }
 }

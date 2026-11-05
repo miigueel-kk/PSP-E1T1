@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -36,11 +37,22 @@ namespace IdazkaritzaApp.Formularioak
         }
 
         // 2. BOTOIA: INPORTATU DATUAK
-        private void btnInportatu_Click(object sender, EventArgs e)
+        private async void btnInportatu_Click(object sender, EventArgs e)
         {
             aldatuEgoera(false); // Botoiak blokeatu prozesua amaitu arte
 
-            bool ondo = ExekutatuJava("inportatu", out string mezua);
+            Task<(bool ondo, string mezua)> javaTask = Task.Run(() =>
+            {
+                bool emaitza = ExekutatuJava("inportatu", out string irteeraMezua);
+                return (emaitza, irteeraMezua);
+            });
+
+            Task progresuTask = ErakutsiProgresuaAsync("Datuak inportatzen");
+
+            // Bi atazak (Java prozesua eta gutxienez 5 segundoko barra) amaitu arte itxaron
+            await Task.WhenAll(javaTask, progresuTask);
+
+            (bool ondo, string mezua) = await javaTask;
 
             aldatuEgoera(true);
 
@@ -59,7 +71,7 @@ namespace IdazkaritzaApp.Formularioak
         }
 
         // 3. BOTOIA: ESPORTATU DATUAK
-        private void btnEsportatu_Click(object sender, EventArgs e)
+        private async void btnEsportatu_Click(object sender, EventArgs e)
         {
             string formatua = rbCSV.Checked ? "CSV" : "XML";
             string probintzia = cmbProbintzia.SelectedItem != null ? cmbProbintzia.SelectedItem.ToString() : "Guztiak";
@@ -74,7 +86,18 @@ namespace IdazkaritzaApp.Formularioak
 
             aldatuEgoera(false);
 
-            bool ondo = ExekutatuJava(argumentuak, out string mezua);
+            Task<(bool ondo, string mezua)> javaTask = Task.Run(() =>
+            {
+                bool emaitza = ExekutatuJava(argumentuak, out string irteeraMezua);
+                return (emaitza, irteeraMezua);
+            });
+
+            Task progresuTask = ErakutsiProgresuaAsync("Datuak esportatzen");
+
+            // Bi atazak (Java prozesua eta gutxienez 5 segundoko barra) amaitu arte itxaron
+            await Task.WhenAll(javaTask, progresuTask);
+
+            (bool ondo, string mezua) = await javaTask;
 
             aldatuEgoera(true);
 
@@ -193,11 +216,45 @@ namespace IdazkaritzaApp.Formularioak
             }
         }
 
+        // Metodo laguntzailea: Gutxienez 5 segundoko (5000ms) karga-barra erakusten du UI-a izoztu gabe
+        private async Task ErakutsiProgresuaAsync(string ekintzaTestua)
+        {
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = 100;
+            progressBar1.Value = 0;
+            progressBar1.Visible = true;
+
+            lblProgresua.Text = $"{ekintzaTestua}... 0%";
+            lblProgresua.Visible = true;
+
+            // Ariketa 8-an bezala 200ms-ro eguneratu: 25 pauso * 200ms = 5000ms (5 segundo)
+            int pausoa = 4;
+            for (int portzentaia = pausoa; portzentaia <= 100; portzentaia += pausoa)
+            {
+                await Task.Delay(200);
+                progressBar1.Value = portzentaia;
+                lblProgresua.Text = $"{ekintzaTestua}... {portzentaia}%";
+            }
+
+            progressBar1.Value = 100;
+        }
+
         // Metodo laguntzailea: Interfazea blokeatu/desblokeatu prozesua exekutatzen den bitartean
         private void aldatuEgoera(bool aktibo)
         {
             btnInportatu.Enabled = aktibo;
             btnEsportatu.Enabled = aktibo;
+            rbCSV.Enabled = aktibo;
+            rbXML.Enabled = aktibo;
+            cmbProbintzia.Enabled = aktibo;
+            cmbHerria.Enabled = aktibo;
+
+            if (aktibo)
+            {
+                progressBar1.Visible = false;
+                lblProgresua.Visible = false;
+            }
+
             Cursor = aktibo ? Cursors.Default : Cursors.WaitCursor;
         }
 
@@ -210,11 +267,13 @@ namespace IdazkaritzaApp.Formularioak
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = LortuJavaBidea(),
-                    Arguments = $"-jar \"{jarIbilbidea}\" {argumentuak}",
+                    Arguments = $"-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -jar \"{jarIbilbidea}\" {argumentuak}",
                     WorkingDirectory = lanKarpeta,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
+                    StandardOutputEncoding = System.Text.Encoding.UTF8,
+                    StandardErrorEncoding = System.Text.Encoding.UTF8,
                     CreateNoWindow = true
                 };
 

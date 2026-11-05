@@ -135,31 +135,4 @@
     <ostatu_mota>bungalow</ostatu_mota>
     <sortzeEguna>2026-08-05</sortzeEguna>
   </row>
-  <row num="16">
-    <id>16</id>
-    <izena>Imanol</izena>
-    <abizena>Ayala</abizena>
-    <emaila>iayalac25@gmail.com</emaila>
-    <telefonoa>7349273483</telefonoa>
-    <ostatu_mota>denda</ostatu_mota>
-    <sortzeEguna>2026-11-04</sortzeEguna>
-  </row>
-  <row num="17">
-    <id>17</id>
-    <izena>Javier</izena>
-    <abizena>Ayala</abizena>
-    <emaila>difakdjf</emaila>
-    <telefonoa>654364368</telefonoa>
-    <ostatu_mota>autoka</ostatu_mota>
-    <sortzeEguna>2026-11-04</sortzeEguna>
-  </row>
-  <row num="18">
-    <id>18</id>
-    <izena>Miguel</izena>
-    <abizena>djfñlk</abizena>
-    <emaila>iayad</emaila>
-    <telefonoa>97897987</telefonoa>
-    <ostatu_mota>autoka</ostatu_mota>
-    <sortzeEguna>2026-11-04</sortzeEguna>
-  </row>
 </rows>
