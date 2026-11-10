@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<kanpinak>
+<kanpina id="PVI00001">
+<izena>IBAYA</izena>
+<deskribapena>Gasteizko erdialdetik bost kilometrora dagoen kanpina da, inguru lasai batean, jarduera ugari pra...</deskribapena>
+<kategoria>T</kategoria>
+<edukiera>250</edukiera>
+<kokalekua>Zuazo de Vitoria/Zuhatzu</kokalekua>
+<helbidea>
+<kalea>Zuazo de Vitoria, 21</kalea>
+<postaKodea>01195</postaKodea>
+<herria id="59">Vitoria-Gasteiz</herria>
+<probintzia id="1">Araba/Álava</probintzia>
+</helbidea>
+<telefonoa>945147620</telefonoa>
+<emaila>info@campingibaia.com</emaila>
+<webgunea>http://www.campingibaia.com</webgunea>
+<estekak>
+<friendly>https://turismoa.euskadi.eus/eu/ostatuak/ibaya-kanpina/aa30-12375/eu/</friendly>
+<physical>https://turismoa.euskadi.eus/aa30-12375/eu/contenidos/a_alojamiento/0000000645_a1_rec_turismo/eu_645/645-ficha2.html</physical>
+</estekak>
+<fitxategiak>
+<dataXML>https://turismoa.euskadi.eus/contenidos/a_alojamiento/0000000645_a1_rec_turismo/eu_645/data/645_openData.xml</dataXML>
+<metadataXML>https://turismoa.euskadi.eus/contenidos/a_alojamiento/0000000645_a1_rec_turismo/r01Index/0000000645_a1_rec_turismo-idxContent.xml</metadataXML>
+<zipFile>https://turismoa.euskadi.eus/contenidos/a_alojamiento/0000000645_a1_rec_turismo/opendata/0000000645_a1_rec_turismo.zip</zipFile>
+</fitxategiak>
+</kanpina>
+</kanpinak>

@@ -35,6 +35,17 @@ namespace IdazkaritzaApp.Formularioak
             dgvBezeroak.Columns.Add("izena", "Izena");
             dgvBezeroak.Columns.Add("abizena", "Abizena");
             dgvBezeroak.Columns.Add("ostatu_mota", "Ostatu mota");
+
+            var mezuaZutabea = new DataGridViewButtonColumn
+            {
+                Name = "mezua",
+                HeaderText = "Mezua",
+                Text = "Mezua",
+                UseColumnTextForButtonValue = true,
+                FillWeight = 60                       
+            };
+            dgvBezeroak.Columns.Add(mezuaZutabea);
+
         }
 
         private void KargatuBezeroakTaulan()
@@ -75,11 +86,93 @@ namespace IdazkaritzaApp.Formularioak
         private void dgvBezeroak_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
+            if (dgvBezeroak.Rows[e.RowIndex].Tag is not Bezeroa bezeroa) return;
 
-            if (dgvBezeroak.Rows[e.RowIndex].Tag is Bezeroa aukeratutakoBezeroa)
+            if (dgvBezeroak.Columns[e.ColumnIndex].Name == "mezua")
+                MezuaBidali(bezeroa);          
+            else
+                IrekiBezeroLeihoa(bezeroa);
+        }
+
+        // Bezeroaren leihoa bilatu (null bada, irekita ez dago)
+        private FrmBezeroLeihoa? BilatuLeihoa(int bezeroId)
+        {
+            return Application.OpenForms
+                .OfType<FrmBezeroLeihoa>()
+                .FirstOrDefault(f => f.BezeroId == bezeroId);
+        }
+
+        // Leihoa ireki, edo aurrera ekarri jada irekita badago
+        private FrmBezeroLeihoa IrekiBezeroLeihoa(Bezeroa bezeroa)
+        {
+            FrmBezeroLeihoa? leihoa = BilatuLeihoa(bezeroa.Id);
+
+            if (leihoa == null)
             {
-                new FrmBezeroLeihoa(aukeratutakoBezeroa, zerrenda).Show();
+                leihoa = new FrmBezeroLeihoa(bezeroa, zerrenda);
+                leihoa.Show();
             }
+            else
+            {
+                leihoa.Activate();
+            }
+
+            return leihoa;
+        }
+
+        private void MezuaBidali(Bezeroa bezeroa)
+        {
+            string? testua = GaldetuMezua(bezeroa);
+            if (string.IsNullOrWhiteSpace(testua)) return;   // utzi edo hutsik
+
+            FrmBezeroLeihoa leihoa = IrekiBezeroLeihoa(bezeroa);
+            leihoa.MezuaErakutsi(testua.Trim());
+        }
+
+        // Mezua idazteko leiho txikia (kodetik sortua, ez du diseinurik behar)
+        private static string? GaldetuMezua(Bezeroa bezeroa)
+        {
+            using Form dialogoa = new Form
+            {
+                Text = $"Mezua - {bezeroa.Izena} {bezeroa.Abizena}",
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                ClientSize = new Size(400, 130)
+            };
+
+            Label lblTestua = new Label
+            {
+                Text = "Idatzi bezeroari bidaliko zaion mezua:",
+                Location = new Point(15, 15),
+                AutoSize = true
+            };
+            TextBox txtMezua = new TextBox
+            {
+                Location = new Point(15, 45),
+                Size = new Size(370, 27)
+            };
+            Button btnBidali = new Button
+            {
+                Text = "Bidali",
+                Location = new Point(215, 85),
+                Size = new Size(80, 30),
+                DialogResult = DialogResult.OK
+            };
+            Button btnUtzi = new Button
+            {
+                Text = "Utzi",
+                Location = new Point(305, 85),
+                Size = new Size(80, 30),
+                DialogResult = DialogResult.Cancel
+            };
+
+            dialogoa.Controls.AddRange(new Control[] { lblTestua, txtMezua, btnBidali, btnUtzi });
+            dialogoa.AcceptButton = btnBidali;   // Enter = bidali
+            dialogoa.CancelButton = btnUtzi;     // Esc = utzi
+
+            return dialogoa.ShowDialog() == DialogResult.OK ? txtMezua.Text : null;
         }
 
         private void btnSortu_Click(object? sender, EventArgs e)

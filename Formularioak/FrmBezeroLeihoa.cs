@@ -16,6 +16,10 @@ namespace IdazkaritzaApp.Formularioak
     {
         //Lehio honen bezeroa gordetzen du
         private readonly Bezeroa bezeroa;
+
+        // Beste lehioek jakin dezaten lehio hau zein bezerorena den
+        public int BezeroId => bezeroa.Id;
+
         // Eskaera zerrenda abiarazten dugu
         private readonly EskaeraZerrenda zerrenda;
 
@@ -183,6 +187,8 @@ namespace IdazkaritzaApp.Formularioak
                 );
 
             zerrenda.eskaerak.Add(e);
+
+
 
         }
     }
