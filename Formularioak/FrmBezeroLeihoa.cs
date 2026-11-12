@@ -61,6 +61,11 @@ namespace IdazkaritzaApp.Formularioak
             textTelefonoa.ReadOnly = true;
             textSortzeEguna.ReadOnly = true;
 
+            // Idazkaritzaren mezu guztiak erakutsi (badaude)
+            textMezua.Lines = Datuak.LortuMezuak(bezeroa.Id).ToArray();
+            textMezua.ReadOnly = true;
+            Datuak.MezuaBidalita += MezuaJaso;
+
             //Botoiak bakoitza klikatzean bere metodoa exekutatzen da
             btnEskuoihalak.Click += btnEskuoihalak_Click;
             btnIzarak.Click += btnIzarak_Click;
@@ -119,14 +124,21 @@ namespace IdazkaritzaApp.Formularioak
 
         private void FrmBezeroLehioa_FormClosed(object? sender, FormClosedEventArgs e)
         {
+            Datuak.MezuaBidalita -= MezuaJaso;
+
             //Lehioa ixtean bezeroa joan dela jakinarazten du
             CheckOutEginda?.Invoke(bezeroa);
         }
 
-        //Idazkaritzatik bezeroari mezua bidaltzeko 
-        public void MezuaErakutsi(string testua)
+        //Idazkaritzak mezu bat bidaltzen duenean, bezero honena bada, azken lerroan gehitu
+        private void MezuaJaso(int bezeroId, string lerroa)
         {
-            MessageBox.Show(this, testua, "Idazkaritzaren mezua");
+            if (bezeroId != bezeroa.Id) return;
+
+            if (textMezua.TextLength > 0)
+                textMezua.AppendText(Environment.NewLine);
+
+            textMezua.AppendText(lerroa);
         }
 
         private void textIzena_TextChanged(object? sender, EventArgs e)

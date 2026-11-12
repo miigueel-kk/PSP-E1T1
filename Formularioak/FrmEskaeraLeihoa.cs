@@ -23,6 +23,7 @@ namespace IdazkaritzaApp.Formularioak
             KonfiguratuTaula();
             // Zutabe bakoitza izango dituen tituluak ezarri
             zutabeakSortu();
+            eskaeraTaula.CellContentClick += eskaeraTaula_CellContentClick;
             // Ikusgarria izatea
             eskaeraTaula.Visible = true;
         }
@@ -52,13 +53,48 @@ namespace IdazkaritzaApp.Formularioak
             eskaeraTaula.Columns.Add("izena", "Bezeroa");
             eskaeraTaula.Columns.Add("mota", "Mota");
             eskaeraTaula.Columns.Add("langilea", "Langilea");
+            
             // Checkbox-a gehitu
             DataGridViewCheckBoxColumn checkbox = new DataGridViewCheckBoxColumn();
 
             checkbox.Name = "amaituta";
             checkbox.HeaderText = "Eginda";
             eskaeraTaula.Columns.Add(checkbox);
+
+            // Mezua bidaltzeko botoia (errenkada bakoitzean)
+            DataGridViewButtonColumn mezuaZutabea = new DataGridViewButtonColumn();
+            mezuaZutabea.Name = "mezua";
+            mezuaZutabea.HeaderText = "Mezua";
+            mezuaZutabea.Text = "Mezua";
+            mezuaZutabea.UseColumnTextForButtonValue = true;   // errenkada guztietan "Mezua" agertzen da
+            eskaeraTaula.Columns.Add(mezuaZutabea);
         }
+
+        // Mezua botoia klikatzerakoan egiten dena
+        private void eskaeraTaula_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            // Goiburua edo beste zutabe bat bada, ez egin ezer
+            if (e.RowIndex < 0) return;
+            if (eskaeraTaula.Columns[e.ColumnIndex].Name != "mezua") return;
+
+            DataGridViewRow errenkada = eskaeraTaula.Rows[e.RowIndex];
+
+            if (!int.TryParse(Convert.ToString(errenkada.Cells["bezero_id"].Value), out int bezeroId))
+                return;
+
+            string bezeroIzena = Convert.ToString(errenkada.Cells["izena"].Value) ?? "";
+
+            // Mezua idatzi (utzi sakatzen bada edo hutsik badago, ez da ezer bidaltzen)
+            string? testua = GaldetuMezua(bezeroIzena);
+            if (string.IsNullOrWhiteSpace(testua)) return;
+
+            // Mezua gorde eta bezeroaren leihoari jakinarazi
+            Datuak.MezuaBidali(bezeroId, testua.Trim());
+
+            MessageBox.Show($"Mezua bidali da: {bezeroIzena}", "Mezua",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             eskaeraTaula.Rows.Clear();
@@ -133,6 +169,52 @@ namespace IdazkaritzaApp.Formularioak
                 // esportazio-leihoarekin lanean ari garen bitartean (Modal leihoa).
                 esportatuLeihoa.ShowDialog();
             }
+        }
+
+        // Mezua idazteko leiho txikia (kodetik sortua, ez du diseinurik behar)
+        private static string? GaldetuMezua(string bezeroIzena)
+        {
+            using Form dialogoa = new Form
+            {
+                Text = $"Mezua - {bezeroIzena}",
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                ClientSize = new Size(400, 130)
+            };
+
+            Label lblTestua = new Label
+            {
+                Text = "Idatzi bezeroari bidaliko zaion mezua:",
+                Location = new Point(15, 15),
+                AutoSize = true
+            };
+            TextBox txtMezua = new TextBox
+            {
+                Location = new Point(15, 45),
+                Size = new Size(370, 27)
+            };
+            Button btnBidali = new Button
+            {
+                Text = "Bidali",
+                Location = new Point(215, 85),
+                Size = new Size(80, 30),
+                DialogResult = DialogResult.OK
+            };
+            Button btnUtzi = new Button
+            {
+                Text = "Utzi",
+                Location = new Point(305, 85),
+                Size = new Size(80, 30),
+                DialogResult = DialogResult.Cancel
+            };
+
+            dialogoa.Controls.AddRange(new Control[] { lblTestua, txtMezua, btnBidali, btnUtzi });
+            dialogoa.AcceptButton = btnBidali;
+            dialogoa.CancelButton = btnUtzi;
+
+            return dialogoa.ShowDialog() == DialogResult.OK ? txtMezua.Text : null;
         }
     }
 }

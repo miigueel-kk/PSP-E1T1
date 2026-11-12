@@ -36,5 +36,29 @@ namespace IdazkaritzaApp.Modeloak
             BezeroakList.Add(b);
             return b;
         }
+
+        // Bezero bakoitzak jasotako mezu guztiak (bezero ID -> mezuen zerrenda)
+        public static Dictionary<int, List<string>> Mezuak { get; } = new();
+
+        // Mezu bat bidaltzen denean jaurtitzen da (bezero ID, mezuaren lerroa)
+        public static event Action<int, string>? MezuaBidalita;
+
+        public static void MezuaBidali(int bezeroId, string testua)
+        {
+            string lerroa = $"[{DateTime.Now:HH:mm}] {testua}";
+
+            if (!Mezuak.ContainsKey(bezeroId))
+                Mezuak[bezeroId] = new List<string>();
+
+            Mezuak[bezeroId].Add(lerroa);
+            MezuaBidalita?.Invoke(bezeroId, lerroa);
+        }
+
+        // Bezero baten mezu guztiak lortzen ditu (hutsik, ez badu)
+        public static List<string> LortuMezuak(int bezeroId)
+        {
+            return Mezuak.TryGetValue(bezeroId, out var zerrenda) ? zerrenda : new List<string>();
+        }
+
     }
 }
