@@ -200,8 +200,6 @@ namespace IdazkaritzaApp.Formularioak
 
             zerrenda.eskaerak.Add(e);
 
-
-
         }
     }
 }

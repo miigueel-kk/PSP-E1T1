@@ -43,13 +43,18 @@ namespace IdazkaritzaApp.Formularioak
             Datuak.BezeroakList.Clear();
 
             List<Bezeroa> xmlBezeroak = BezeroXmlKudeatzailea.IrakurriBezeroakXmltik();
+
             foreach (Bezeroa b in xmlBezeroak)
             {
                 Datuak.BezeroakList.Add(b);
                 GehituErrenkadaTaulan(b);
             }
 
+            
+
+           
             dgvBezeroak.ClearSelection();
+
         }
 
         private void GehituErrenkadaTaulan(Bezeroa b)

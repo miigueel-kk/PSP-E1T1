@@ -13,6 +13,12 @@ namespace IdazkaritzaApp.Formularioak
 
     {
         private readonly EskaeraZerrenda zerrenda;
+
+        // Lanaldia kudeatzeko haria
+        private Thread? haria;
+
+        // Lanaldia gelditzeko seinalea
+        private readonly ManualResetEvent gelditzekoSeinalea = new ManualResetEvent(false);
         public FrmEskaeraLeihoa(EskaeraZerrenda zerrenda)
         {
             InitializeComponent();
@@ -68,6 +74,13 @@ namespace IdazkaritzaApp.Formularioak
             mezuaZutabea.Text = "Mezua";
             mezuaZutabea.UseColumnTextForButtonValue = true;   // errenkada guztietan "Mezua" agertzen da
             eskaeraTaula.Columns.Add(mezuaZutabea);
+
+            eskaeraTaula.Rows.Clear();
+            // Eskaera bakoitza gehituko du errenkada bat gehituz
+            foreach (Eskaera eskaera in zerrenda.eskaerak)
+            {
+                gehituEskaera(eskaera);
+            }
         }
 
         // Mezua botoia klikatzerakoan egiten dena
@@ -97,12 +110,50 @@ namespace IdazkaritzaApp.Formularioak
 
         private void button1_Click(object sender, EventArgs e)
         {
-            eskaeraTaula.Rows.Clear();
-            // Eskaera bakoitza gehituko du errenkada bat gehituz
-            foreach (Eskaera eskaera in zerrenda.eskaerak)
+            // Haria martxan badago, ez hasi berriro
+            if (haria != null && haria.IsAlive)
+                return;
+
+            // Gelditzeko seinalea berrezarri
+            gelditzekoSeinalea.Reset();
+
+            // Botoia desaktibatu
+            lanaHasiBotoia.Enabled = false;
+
+            // Haria sortu
+            haria = new Thread(() => hariaLanaldia());
+            
+
+            // Haria bigarren mailako hari gisa konfiguratu
+            haria.IsBackground = true;
+
+            // Haria abiarazi
+            haria.Start();
+        }
+
+        private void hariaLanaldia() {
+            // Eskaera guztiak zeharkatu
+            for (int i = 0; i < eskaeraTaula.Rows.Count; i++)
             {
-                gehituEskaera(eskaera);
+                // Lanaldia bukatzeko seinalea jaso arte itxaron
+                if (gelditzekoSeinalea.WaitOne(10000))
+                    break;
+
+                // Eskaera eginda dagoela markatu
+                this.Invoke((MethodInvoker)delegate
+                {
+                    if (i < eskaeraTaula.Rows.Count)
+                    {
+                        eskaeraTaula.Rows[i].Cells["amaituta"].Value = true;
+                    }
+                });
             }
+
+            // Prozesua amaitutakoan
+            this.Invoke((MethodInvoker)delegate
+            {
+                lanaHasiBotoia.Enabled = true;
+            });
         }
 
         private void gehituEskaera(Eskaera e)
@@ -135,7 +186,10 @@ namespace IdazkaritzaApp.Formularioak
 
         private void LanaBukatuBotoia_Click(object sender, EventArgs e)
         {
-            eskaeraTaula.EndEdit();
+            // Lanaldia gelditu
+            gelditzekoSeinalea.Set();
+
+            eskaeraTaula.EndEdit();      
 
             // Errenkada bakoitza zeharkatuko du
             foreach (DataGridViewRow errenkada in eskaeraTaula.Rows)
@@ -143,6 +197,7 @@ namespace IdazkaritzaApp.Formularioak
                 // Errenkada nulua ez bada eta Checkbox-a markatuta badago orduan jarraituko du
                 if (errenkada.Cells["amaituta"].Value != null && Convert.ToBoolean(errenkada.Cells["amaituta"].Value))
                 {
+
                     // Eskaera_id ateratzen dugu, gero ezabatzeko
                     String eskaera_id = Convert.ToString(errenkada.Cells["eskaera_id"].Value);
                     // Eskaera izango da, aurkitzen duen eskaera id horrekin
@@ -151,11 +206,10 @@ namespace IdazkaritzaApp.Formularioak
                     if (eskaera != null)
                     {
                         zerrenda.eskaerak.Remove(eskaera);
+                        eskaeraTaula.Rows.Remove(errenkada);
                     }
                 }
             }
-            // Errenkada guztiak kentzen dira, lanaldia hasterakoan agertuko dira faltatzen diren eskaerak kudeatzeko
-            eskaeraTaula.Rows.Clear();
 
         }
 
